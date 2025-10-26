@@ -1,0 +1,77 @@
+/* /04-core-code/ui/css/f3-adjustments.css */
+
+/* --- F3 Main Container & Grid Layout --- */
+.f3-container {
+    display: grid;
+    /* Columns: A (Label), B (Content), C (Content), D (Blank) */
+    grid-template-columns: 0.8fr 1.2fr 1fr 0.5fr;
+    gap: 12px 10px;
+    align-items: center;
+}
+
+/* --- Generic Cell Styles --- */
+.f3-container .grid-cell {
+    min-height: 28px;
+    display: flex;
+    align-items: center;
+}
+
+/* --- Span Helpers --- */
+.f3-container .grid-span-2 {
+    grid-column: span 2;
+}
+
+.f3-container .grid-span-4 {
+    grid-column: span 4;
+}
+
+/* --- Section Headers --- */
+.f3-container .section-header {
+    grid-column: 1 / -1;
+    /* Span all columns */
+    font-weight: bold;
+    color: #1f2937;
+    background-color: #d1d5db;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+
+.f3-container .section-header:first-child {
+    margin-top: 0;
+}
+
+/* --- Input & Button Styles --- */
+.f3-container .input-field,
+.f3-container .textarea-field {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #b0b8c4;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 1em;
+}
+
+.f3-container .textarea-field {
+    resize: vertical;
+    /* Allow vertical resizing for text areas */
+}
+
+.f3-container .action-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid #1e40af;
+    background-color: #3b82f6;
+    color: white;
+    transition: background-color 0.2s;
+}
+
+.f3-container .action-button:hover {
+    background-color: #2563eb;
+}

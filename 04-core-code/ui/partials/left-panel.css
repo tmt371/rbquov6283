@@ -1,0 +1,225 @@
+/* File: 04-core-code/ui/partials/left-panel.css */
+
+/* --- Left Panel Styles --- */
+:root {
+    --tab-active-color: #1a237e;
+    --k1-bg-color: hsl(220, 15%, 96%);
+    --k2-bg-color: hsl(220, 15%, 91%);
+    --k3-bg-color: hsl(220, 15%, 86%);
+    --k4-bg-color: hsl(220, 15%, 81%);
+    --k5-bg-color: hsl(220, 15%, 76%);
+}
+#left-panel {
+    position: fixed;
+    left: 0;
+    background-color: var(--k1-bg-color);
+    border: 1px solid var(--panel-border-color);
+    border-left: none;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    z-index: 100;
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    transform: translateX(-100%);
+}
+#left-panel.is-expanded {
+    transform: translateX(0);
+}
+
+/* [FINAL REVISION] Handle is now permanently fixed at left:0 and positioned lower. */
+#left-panel-toggle {
+    position: fixed;
+    /* Move down from vertical center by the handle's own height (80px) */
+    top: calc(50% + 80px); 
+    left: 0;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 80px;
+    background-color: #e5e7eb;
+    border: 1px solid var(--panel-border-color);
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 101;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* [REMOVED] The rule that moved the handle to the right has been deleted to meet the new requirement. */
+
+#left-panel-toggle .toggle-arrow {
+    width: 20px;
+    height: 20px;
+    transition: opacity 0.3s ease-in-out;
+    position: absolute; /* Both arrows overlay each other */
+}
+
+#left-panel-toggle .arrow-right {
+    opacity: 1; /* Visible by default */
+}
+
+#left-panel-toggle .arrow-left {
+    opacity: 0; /* Hidden by default */
+}
+
+/* When panel is expanded, flip the arrow's visibility */
+#left-panel.is-expanded ~ #left-panel-toggle .arrow-right {
+    opacity: 0;
+}
+
+#left-panel.is-expanded ~ #left-panel-toggle .arrow-left {
+    opacity: 1;
+}
+
+
+.tab-container { display: flex; flex-shrink: 0; background-color: #d1d5db; }
+.tab-button {
+    height: 30px; flex-grow: 1; border: none; background-color: transparent; cursor: pointer;
+    font-size: 0.9em; font-weight: bold; color: #4b5563; transition: background-color 0.2s, color 0.2s;
+    border-radius: 6px 6px 0 0; border-bottom: 3px solid transparent;
+}
+.tab-button:hover { background-color: #e5e7eb; }
+.tab-button.active { color: white; }
+.tab-button:disabled {
+    background-color: #6c757d !important;
+    color: #e9ecef !important;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+#k1-tab.active { background-color: var(--k1-bg-color); border-color: var(--tab-active-color); color: var(--tab-active-color); }
+#k2-tab.active { background-color: var(--k2-bg-color); border-color: var(--tab-active-color); color: var(--tab-active-color);}
+#k3-tab.active { background-color: var(--k3-bg-color); border-color: var(--tab-active-color); color: #2c3e50; }
+#k4-tab.active { background-color: var(--k4-bg-color); border-color: var(--tab-active-color); color: #2c3e50; }
+#k5-tab.active { background-color: var(--k5-bg-color); border-color: var(--tab-active-color); color: #2c3e50; }
+
+.tab-content-container { flex-grow: 1; padding: 15px; overflow-y: auto; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+#k1-content { background-color: var(--k1-bg-color); } #k2-content { background-color: var(--k2-bg-color); }
+#k3-content { background-color: var(--k3-bg-color); } #k4-content { background-color: var(--k4-bg-color); }
+#k5-content { background-color: var(--k5-bg-color); }
+
+/* --- Left Panel Feature Styles --- */
+.feature-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.feature-group {}
+.feature-label {
+    display: block; font-size: 0.8em; font-weight: bold; color: #4b5563;
+    margin-bottom: 5px; text-transform: uppercase;
+}
+.feature-buttons {
+    display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+}
+.feature-button {
+    padding: 8px 12px; font-size: 0.9em; cursor: pointer; border-radius: 4px;
+    border: 1px solid #b0b8c4; background-color: #fff; font-weight: 500;
+    transition: background-color 0.2s, box-shadow 0.2s, opacity 0.2s;
+    flex-grow: 1;
+}
+.feature-button.active {
+    background-color: var(--highlight-color); font-weight: bold;
+}
+.feature-button.active:hover { background-color: var(--highlight-color); }
+.feature-button:disabled {
+    background-color: #6c757d; border-color: #5a6268; color: white;
+    cursor: not-allowed; opacity: 0.7;
+}
+.feature-button:hover { background-color: #f0f2f5; }
+.feature-button:active {
+    background-color: #e5e7eb; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+.batch-button { background-color: #e0f2fe; border-color: #7dd3fc; }
+.batch-button:hover { background-color: #bae6fd; }
+
+/* --- Panel Input Table Styles --- */
+.panel-input-table {
+    width: 100%; border-collapse: collapse; margin-top: 10px;
+}
+.panel-input-table th, .panel-input-table td {
+    border: 1px solid #b0b8c4; padding: 4px 6px; font-size: 0.9em; text-align: center;
+}
+.panel-input-table th { background-color: #e5e7eb; font-weight: bold; }
+.panel-input {
+    width: 100%; box-sizing: border-box; border: 1px solid #b0b8c4;
+    padding: 5px; border-radius: 3px; font-size: 1em;
+}
+#location-input-box { width: 120px; background-color: #e9ecef; }
+#location-input-box.active { background-color: #fffacd; }
+.panel-input:disabled { background-color: #e9ecef; cursor: not-allowed; }
+
+/* --- K2 Light-Filter Feature Styles --- */
+.results-table td.lf-selection-highlight { background-color: #fffacd; }
+.results-table td.is-lf-modified {
+    background-color: #ffccd5; box-shadow: inset 0 0 0 1px #e5a0aa;
+}
+
+/* --- K5 Styles --- */
+#k4-input-display {
+    width: 150px; text-align: right; background-color: #e9ecef;
+}
+#k4-input-display.active { background-color: #fffacd; }
+.k4-price-box {
+    border: 1px solid black; padding: 5px 8px; border-radius: 4px;
+    background-color: #fff; display: flex; align-items: baseline;
+    gap: 8px; justify-content: flex-end;
+}
+.k4-price-box .price-label { font-size: 0.8em; font-weight: bold; color: #4b5563; }
+.k4-price-box .price-value { font-size: 1.1em; font-weight: bold; color: var(--primary-color); }
+.results-table td.dual-cell-active { background-color: #cffde1; }
+
+/* --- K4 Styles --- */
+#k4-content .feature-buttons { display: grid; grid-template-columns: repeat(5, 1fr); }
+#k4-content .feature-button { flex-grow: 0; padding: 8px 4px; font-size: 0.8em; text-align: center; }
+.k5-display-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.k5-display-box {
+    text-align: right; font-weight: bold; color: var(--primary-color);
+    background-color: #e9ecef; font-size: 0.9em; padding: 6px;
+}
+.k5-combined-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; align-items: center; }
+.k5-total-label { grid-column: 1 / 2; font-weight: bold; font-size: 1.1em; color: #2c3e50; text-align: center; }
+.k5-total-display {
+    grid-column: 2 / 3; font-size: 1.2em; font-weight: bold; color: #ec4899;
+    text-align: right; padding: 6px; background-color: #fff;
+}
+#k5-counter-remote { grid-column: 3 / 4; }
+#k5-counter-charger { grid-column: 4 / 5; }
+#k5-counter-cord { grid-column: 5 / 6; }
+.k5-counter-group { display: flex; flex-direction: column; align-items: stretch; gap: 4px; }
+.k5-counter-btn {
+    border: 1px solid #b0b8c4; background-color: #fff; font-size: 1.2em;
+    font-weight: bold; padding: 2px 0; cursor: pointer; border-radius: 4px;
+}
+.k5-counter-btn:active { background-color: #e5e7eb; }
+.k5-counter-btn:disabled { background-color: #e9ecef; color: #adb5bd; cursor: not-allowed; }
+.k5-counter-display {
+    text-align: center; font-weight: bold; font-size: 1.1em;
+    padding: 4px; background-color: #fff;
+}
+.results-table td.winder-cell-active, .results-table td.motor-cell-active {
+    background-color: #fffacd; font-weight: bold;
+}
+
+/* --- K5 Panel (formerly K4) Styles --- */
+.k5-grid-layout { display: flex; flex-direction: column; gap: 5px; font-size: 0.8em; }
+.k5-grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.k5-grid-group {
+    border: 1px solid #333; border-radius: 4px; padding: 8px;
+    display: flex; align-items: center; gap: 8px;
+}
+.k5-grid-group > div { flex: 1; min-width: 0; }
+.k5-grid-cell-label { font-weight: bold; text-align: center; font-size: 1em; }
+.k5-summary-display-box {
+    text-align: right; font-weight: bold; color: var(--primary-color); background-color: #e9ecef;
+}
+.k5-grid-group .feature-button { width: 100%; flex-grow: 0; }
+.k5-grid-group .k4-price-box, .k5-grid-group #k4-input-display { width: 100%; box-sizing: border-box; }
+.k5-grid-group-total { border: 1px solid #c0392b; }
+.k5-summary-total-box { font-size: 1.1em; color: #c0392b; background-color: #fff; }

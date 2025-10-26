@@ -1,0 +1,150 @@
+/* File: 04-core-code/ui/css/results-table.css */
+
+/* --- Main Results Table Styles --- */
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: 5px;
+}
+
+.results-table thead {
+    position: sticky;
+    top: 0;
+    background-color: var(--app-bg-color);
+    z-index: 10;
+}
+
+.results-table td,
+.results-table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    word-break: break-all;
+}
+
+.results-table th,
+.input-display-cell {
+    border-top: none;
+    box-shadow: inset 0 6px 0 0 var(--header-border-color);
+}
+
+/* --- Column Widths --- */
+.results-table .col-sequence { width: 40px; }
+.results-table .col-w { width: auto; }
+.results-table .col-h { width: auto; }
+.results-table .col-type { width: 80px; }
+.results-table .col-price { width: 90px; }
+.results-table .col-location { width: 120px; }
+.results-table .col-fabric { width: 120px; }
+.results-table .col-color { width: 120px; }
+.results-table .col-over,
+.results-table .col-oi,
+.results-table .col-lr {
+    width: 80px;
+}
+.results-table .col-dual,
+.results-table .col-chain {
+    width: 80px;
+}
+.results-table .col-winder,
+.results-table .col-motor {
+    width: 80px;
+}
+
+
+/* --- Cell States & Special Styles --- */
+.results-table td.target-cell {
+    box-shadow: inset 0 0 0 2px black;
+}
+
+.results-table tr.target-row-highlight > td {
+    background-color: #fffacd;
+}
+
+.results-table th.input-display-header {
+    padding: 0;
+    border: none;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.input-display-cell {
+    background-color: #fffacd;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: right;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    border: none;
+}
+
+.results-table td.price-cell {
+    text-align: right;
+    font-size: 0.9em;
+}
+
+.results-table td.active-input-cell {
+    box-shadow: inset 0 0 0 2px var(--primary-color);
+}
+.results-table td.selected-row-highlight {
+    background-color: var(--highlight-color);
+    font-weight: bold;
+}
+
+.results-table td.multi-selected-row {
+    background-color: #f8d7da;
+    font-weight: bold;
+}
+.results-table td.selection-disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+.type-b2 { font-weight: bold; font-style: italic; }
+.type-sn { color: var(--medium-blue-color); font-weight: bold; }
+/* [NEW] Added placeholder styles for new fabric types */
+.type-b3 { color: #8a2be2; font-weight: bold; } /* BlueViolet */
+.type-b4 { color: #20b2aa; font-weight: bold; } /* LightSeaGreen */
+.type-b5 { color: #d2691e; font-weight: bold; } /* Chocolate */
+
+
+/* --- Responsive Adjustments for Mobile Devices --- */
+@media (max-width: 600px) {
+    /* Quick Quote View */
+    .app-container:not(.detail-view-active) .results-table th,
+    .app-container:not(.detail-view-active) .results-table td {
+        padding: 8px 4px;
+    }
+
+    .app-container:not(.detail-view-active) .results-table .col-sequence { width: 21px; }
+    .app-container:not(.detail-view-active) .results-table .col-w,
+    .app-container:not(.detail-view-active) .results-table .col-h { width: 63px; }
+    .app-container:not(.detail-view-active) .results-table .col-type { width: 55px; }
+    .app-container:not(.detail-view-active) .results-table .col-price { width: 80px; }
+
+    /* Detail View */
+    .app-container.detail-view-active .results-table th,
+    .app-container.detail-view-active .results-table td {
+        font-size: 0.72em;
+        padding: 8px 3px;
+    }
+
+    .app-container.detail-view-active .results-table th { font-size: 0.7em; }
+    .app-container.detail-view-active .input-display-cell { font-size: 1em; }
+
+    .app-container.detail-view-active .results-table .col-sequence { width: 29px; }
+    .app-container.detail-view-active .results-table .col-type { width: 50px; }
+    .app-container.detail-view-active .results-table .col-location { width: 90px; }
+    .app-container.detail-view-active .results-table .col-over,
+    .app-container.detail-view-active .results-table .col-oi,
+    .app-container.detail-view-active .results-table .col-lr { width: 47px; }
+    .app-container.detail-view-active .results-table .col-dual,
+    .app-container.detail-view-active .results-table .col-chain { width: 47px; }
+    .app-container.detail-view-active .results-table .col-winder,
+    .app-container.detail-view-active .results-table .col-motor { width: 60px; }
+}

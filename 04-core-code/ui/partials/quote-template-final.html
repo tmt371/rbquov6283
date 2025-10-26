@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{documentTitle}}</title>
+    <style>
+        /* --- 通用樣式與變數 --- */
+        :root {
+            --primary-color: #1a237e;
+            /* 深藍色 */
+            --border-color: #e0e0e0;
+            /* 邊框顏色 */
+            --text-color: #333;
+            --success-color: #2e7d32;
+            /* 綠色，用於節省金額 */
+            --icon-color: #888888;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Heiti TC', 'Microsoft JhengHei', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+        }
+
+        .quotation-container {
+            max-width: 900px;
+            margin: auto;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+        }
+
+        .quotation-inner-wrapper {
+            border: 2px solid #a0d3e8;
+            padding: 40px;
+            border-radius: 8px;
+        }
+
+        /* --- 頁首 Header --- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--primary-color);
+            margin-bottom: 30px;
+        }
+
+        /* 公司資訊 */
+        .company-details {
+            text-align: right;
+        }
+
+        .company-details h1 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 28px;
+        }
+
+        .company-details p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            color: #555;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        /* 報價單資訊 */
+        .quotation-meta {
+            text-align: left;
+        }
+
+        .quotation-meta h2 {
+            margin: 0 0 20px 0;
+            font-size: 24px;
+            color: #B22222;
+            /* Brick Red 磚紅色 */
+        }
+
+        .quotation-meta p {
+            margin: 4px 0 0;
+            font-size: 14px;
+        }
+
+        .icon {
+            color: var(--icon-color);
+            margin-right: 8px;
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+            order: -1;
+            margin-left: 0;
+            margin-right: 8px;
+        }
+        
+        .company-details .icon {
+            order: 1;
+            margin-right: 0;
+            margin-left: 8px;
+        }
+
+        .company-details .abn-line {
+            padding-right: 28px;
+        }
+
+        /* --- 客戶資訊 --- */
+        .customer-info {
+            margin-bottom: 40px;
+        }
+
+        .customer-info p {
+            margin: 4px 0;
+            line-height: 1.6;
+        }
+
+        /* --- 項目表格 --- */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .items-table thead {
+            background-color: var(--primary-color);
+            color: #ffffff;
+        }
+
+        .items-table th {
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .items-table tbody tr {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .items-table td {
+            padding: 12px 15px;
+            vertical-align: top;
+        }
+
+        .items-table .description {
+            font-weight: 500;
+        }
+
+        .items-table .details {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .items-table .align-right {
+            text-align: right;
+        }
+
+        .items-table .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .items-table .discounted-price {
+            font-weight: bold;
+            color: #d32f2f;
+        }
+
+        .items-table .is-excluded {
+            text-decoration: line-through;
+            color: #999;
+        }
+        
+        .table-scroll-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* --- 總計 --- */
+        .summary-section {
+            display: flex;
+            justify-content: flex-end;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 6px 20px 20px 20px;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .summary-details {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .summary-details table {
+            width: 100%;
+        }
+
+        .summary-details td {
+            padding: 8px 0;
+        }
+
+        .summary-details .summary-label {
+            text-align: right;
+            padding-right: 20px;
+            color: #555;
+        }
+
+        .summary-details .summary-value {
+            text-align: right;
+            font-weight: 500;
+            padding-right: 10px;
+        }
+
+        .summary-details .grand-total td {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+            border-top: 2px solid var(--primary-color);
+            padding-top: 10px;
+        }
+
+        .summary-details .savings-value {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        /* --- Wrapper for Summary and Payment sections --- */
+        .summary-payment-wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .payment-info {
+            width: 50%;
+            margin-top: 0;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 20px;
+        }
+
+        .payment-info h4 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .payment-info p {
+            margin: 4px 0;
+            font-size: 14px;
+        }
+        
+        .payment-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1em;
+        }
+        .payment-table td {
+            padding: 6px 0;
+            border-bottom: 1px solid lightblue;
+        }
+        .payment-table tr:last-child td {
+            border-bottom: none;
+        }
+
+/* <CHANGE> 為最後一橫行（PayID）加上極淺灰色背景 */
+.payment-table tr:last-child {
+    background-color: #f5f5f5;
+}
+        .payment-table td:first-child {
+            font-weight: bold;
+            width: 80px;
+            text-align: right;      /* [MODIFIED] */
+            padding-right: 2px;     /* [MODIFIED] */
+        }
+        .payment-table td:nth-child(2) {
+            text-align: left;       /* [ADDED] */
+            padding-left: 4px;      /* [ADDED] */
+            border-left: 1px solid var(--border-color); /* [ADDED] */
+        }
+        
+        .payment-info strong {
+            display: inline-block;
+            width: 80px;
+        }
+
+        .notes-terms-box {
+            width: 100%;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .notes-terms-box h4 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .notes-terms-box p {
+            margin-bottom: 0;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+        }
+
+        .terms {
+            margin-top: 20px; 
+        }
+
+
+        @media (max-width: 768px) {
+            .quotation-container {
+                padding: 10px;
+            }
+
+            .quotation-inner-wrapper {
+                padding: 20px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .quotation-meta {
+                order: 1;
+            }
+
+            .company-details {
+                order: 2;
+                margin-top: 20px;
+            }
+
+            .company-details,
+            .quotation-meta {
+                text-align: left;
+            }
+
+            .company-details p {
+                justify-content: flex-start;
+            }
+
+            .company-details .abn-line {
+                padding-right: 0;
+            }
+
+            .company-details .icon {
+                order: -1;
+                margin-left: 0;
+                margin-right: 8px;
+            }
+
+            .summary-section {
+                justify-content: center;
+                padding: 0;
+                border: none;
+            }
+
+            .summary-payment-wrapper {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .summary-payment-wrapper .summary-section {
+                order: 1;
+            }
+
+            .summary-payment-wrapper .payment-info {
+                order: 2;
+            }
+
+            .payment-info,
+            .summary-section {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .notes-terms-box {
+                width: 100%;
+            }
+
+            .table-scroll-wrapper {
+                overflow-x: auto;
+            }
+
+            .items-table {
+                border: none;
+                display: block;
+                table-layout: auto;
+            }
+            .items-table thead {
+                border: none;
+                clip: rect(0 0 0 0);
+                height: 1px;
+                margin: -1px;
+                overflow: hidden;
+                padding: 0;
+                position: absolute;
+                width: 1px;
+            }
+            .items-table tr {
+                display: block;
+                margin-bottom: 15px;
+                border: 1px solid var(--border-color);
+                border-radius: 5px;
+                padding: 0;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+                min-width: 280px;
+            }
+            .items-table td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px 15px;
+                border: none;
+                border-bottom: 1px solid var(--border-color);
+                text-align: right;
+            }
+            .items-table tr td:last-child {
+                border-bottom: none;
+            }
+            .items-table td:before {
+                content: attr(data-label);
+                font-weight: 600;
+                text-align: left;
+                padding-right: 15px;
+                color: #333;
+                flex-shrink: 0; 
+            }
+            .items-table td:first-of-type {
+                background-color: var(--primary-color);
+                color: white;
+                font-weight: bold;
+                border-radius: 4px 4px 0 0;
+            }
+            .items-table td:first-of-type::before {
+                color: white;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="quotation-container">
+        <div class="quotation-inner-wrapper">
+
+            <header class="header">
+                <div class="quotation-meta">
+                    <h2>QUOTATION</h2>
+                    <p><strong>Quote No:</strong> {{quoteId}}</p>
+                    <p><strong>Issue Date:</strong> {{issueDate}}</p>
+                    <p><strong>Due Date:</strong> {{dueDate}}</p>
+                </div>
+                <div class="company-details">
+                    <h1>EZ Blinds & Shutters</h1>
+                    <p class="abn-line">ABN: 52 62 74 20 777</p>
+                    <p>U11 / 271 Wells Rd, Chelsea Heights<span class="icon">📍</span></p>
+                    <p>
+                        <span>0466 965 168<span class="icon">📞</span></span>
+                        <span style="margin: 0 10px;">|</span>
+                        <span>ezblinds@ezbns.com.au<span class="icon">✉️</span></span>
+                    </p>
+                    <p>www.ezbns.com.au<span class="icon">🌐</span></p>
+                </div>
+            </header>
+
+            <main>
+                <section class="customer-info">
+                    <p>{{{customerInfoHtml}}}</p>
+                </section>
+
+                <section class="items-section">
+                    <div class="table-scroll-wrapper">
+                        <table class="items-table">
+                            <colgroup>
+                                <col style="width: 8%;">
+                                <col style="width: 42%;">
+                                <col style="width: 15%;">
+                                <col style="width: 17.5%;">
+                                <col style="width: 17.5%;">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>NO</th>
+                                    <th>Description</th>
+                                    <th class="align-right">QTY</th>
+                                    <th class="align-right">Price</th>
+                                    <th class="align-right">Discounted Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{{itemsTableBody}}}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <div class="summary-payment-wrapper">
+                    <section class="payment-info">
+                        <h4>Payment Method</h4>
+                        <table class="payment-table">
+                            <tbody>
+                                <tr>
+                                    <td>Bank</td>
+                                    <td>CBA</td>
+                                </tr>
+                                <tr>
+                                    <td>BSB</td>
+                                    <td>0 6 2 &nbsp;&nbsp; 6 9 2</td>
+                                </tr>
+                                <tr>
+                                    <td>Account</td>
+                                    <td>4 5 7 0 &nbsp;&nbsp; 8 8 7 7</td>
+                                </tr>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Alphalead &nbsp;Pty &nbsp;Ltd</td>
+                                </tr>
+                                <tr>
+                                    <td>PayID</td>
+                                    <td>6 2 7 &nbsp;&nbsp; 4 2 0 &nbsp;&nbsp; 7 7 7</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="font-size: 12px; margin-top: 10px;"><em>Please leave your Ph. number as Ref. in the
+                                transaction.</em></p>
+                    </section>
+
+                    <section class="summary-section">
+                        <div class="summary-details">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="summary-label">Subtotal</td>
+                                        <td class="summary-value">{{subtotal}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="summary-label">GST (10%)</td>
+                                        <td class="summary-value">{{gst}}</td>
+                                    </tr>
+                                    <tr class="grand-total">
+                                        <td class="summary-label">Our Offer</td>
+                                        <td class="summary-value">{{grandTotal}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="summary-label">Deposit (50%)</td>
+                                        <td class="summary-value">{{deposit}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="summary-label"><strong>Balance</strong></td>
+                                        <td class="summary-value"><strong>{{balance}}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="summary-label">You Saved</td>
+                                        <td class="summary-value savings-value">{{savings}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <section class="notes-terms-box">
+                    <h4>General Notes</h4>
+                    <p>{{{generalNotes}}}</p>
+                </section>
+
+                <section class="terms notes-terms-box">
+                    <h4>Terms & Conditions</h4>
+                    {{{termsAndConditions}}}
+                </section>
+
+            </main>
+
+            <footer class="footer">
+                <p>Thank you for your business!</p>
+                <p><strong>EZ Blinds & Shutters</strong></p>
+            </footer>
+
+        </div>
+    </div>
+</body>
+
+</html>

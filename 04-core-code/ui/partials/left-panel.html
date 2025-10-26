@@ -1,0 +1,210 @@
+<div id="left-panel">
+    <div class="tab-container">
+        <button id="k1-tab" class="tab-button active" data-tab-target="#k1-content">K1</button>
+        <button id="k2-tab" class="tab-button" data-tab-target="#k2-content">K2</button>
+        <button id="k3-tab" class="tab-button" data-tab-target="#k3-content">K3</button>
+        <button id="k4-tab" class="tab-button" data-tab-target="#k4-content">K4</button>
+        <button id="k5-tab" class="tab-button" data-tab-target="#k5-content">K5</button>
+    </div>
+    <div class="tab-content-container">
+        <div id="k1-content" class="tab-content active">
+            <div class="feature-grid">
+                <div class="feature-group">
+                    <div class="feature-buttons">
+                        <button id="btn-focus-location" class="feature-button">#Location</button>
+                        <input type="text" id="location-input-box" class="panel-input" placeholder="Location..." disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="k2-content" class="tab-content">
+            <div class="feature-grid">
+                <div class="feature-group">
+                    <div class="feature-buttons">
+                        <button id="btn-focus-fabric" class="feature-button">#Fabric & Color</button>
+                        <button id="btn-light-filter" class="feature-button">Light-Filter</button>
+                        <button id="btn-lf-del" class="feature-button">LF-Del</button>
+                    </div>
+                </div>
+                <div class="feature-group">
+                    <table class="panel-input-table" id="fabric-batch-table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>F-Name</th>
+                                <th>F-Color</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>B1</td>
+                                <td><input type="text" data-type="B1" data-field="fabric" class="panel-input"></td>
+                                <td><input type="text" data-type="B1" data-field="color" class="panel-input"></td>
+                            </tr>
+                            <tr>
+                                <td>B2</td>
+                                <td><input type="text" data-type="B2" data-field="fabric" class="panel-input"></td>
+                                <td><input type="text" data-type="B2" data-field="color" class="panel-input"></td>
+                            </tr>
+                            <tr>
+                                <td>B3</td>
+                                <td><input type="text" data-type="B3" data-field="fabric" class="panel-input"></td>
+                                <td><input type="text" data-type="B3" data-field="color" class="panel-input"></td>
+                            </tr>
+                            <tr>
+                                <td>B4</td>
+                                <td><input type="text" data-type="B4" data-field="fabric" class="panel-input"></td>
+                                <td><input type="text" data-type="B4" data-field="color" class="panel-input"></td>
+                            </tr>
+                            <tr>
+                                <td>B5</td>
+                                <td><input type="text" data-type="B5" data-field="fabric" class="panel-input"></td>
+                                <td><input type="text" data-type="B5" data-field="color" class="panel-input"></td>
+                            </tr>
+                            <tr>
+                                <td>SN</td>
+                                <td><input type="text" data-type="SN" data-field="fabric" class="panel-input"></td>
+                                <td><input type="text" data-type="SN" data-field="color" class="panel-input"></td>
+                            </tr>
+                            <tr>
+                                <td>LF</td>
+                                <td><input type="text" data-type="LF" data-field="fabric" class="panel-input" disabled></td>
+                                <td><input type="text" data-type="LF" data-field="color" class="panel-input" disabled></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="k3-content" class="tab-content">
+            <div class="feature-grid">
+                <div class="feature-group">
+                    <div class="feature-buttons">
+                        <button id="btn-k3-edit" class="feature-button">Edit</button>
+                    </div>
+                </div>
+                <div class="feature-group">
+                    <div class="feature-buttons">
+                        <button id="btn-batch-cycle-over" class="feature-button">Over</button>
+                        <button id="btn-batch-cycle-oi" class="feature-button">O/I</button>
+                        <button id="btn-batch-cycle-lr" class="feature-button">L/R</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="k4-content" class="tab-content">
+            <div class="feature-grid k5-grid">
+                <div class="feature-group">
+                    <div class="feature-buttons">
+                        <button id="btn-k5-winder" class="feature-button">Winder</button>
+                        <button id="btn-k5-motor" class="feature-button">Motor</button>
+                        <button id="btn-k5-remote" class="feature-button">Remote</button>
+                        <button id="btn-k5-charger" class="feature-button">Charger</button>
+                        <button id="btn-k5-3m-cord" class="feature-button">3MCord</button>
+                    </div>
+                </div>
+                <div class="feature-group k5-display-row">
+                    <input type="text" id="k5-display-winder" class="panel-input k5-display-box" placeholder="HD Total..." readonly>
+                    <input type="text" id="k5-display-motor" class="panel-input k5-display-box" placeholder="Motor Total..." readonly>
+                    <input type="text" id="k5-display-remote" class="panel-input k5-display-box" placeholder="Remote Total..." readonly>
+                    <input type="text" id="k5-display-charger" class="panel-input k5-display-box" placeholder="Charger Total..." readonly>
+                    <input type="text" id="k5-display-cord" class="panel-input k5-display-box" placeholder="Cord Total..." readonly>
+                </div>
+                <div class="feature-group k5-combined-row">
+                    <span class="k5-total-label">Total</span>
+                    <input type="text" id="k5-display-total" class="panel-input k5-total-display" readonly>
+                    <div class="k5-counter-group" id="k5-counter-remote">
+                        <button id="btn-k5-remote-add" class="k5-counter-btn" disabled>+</button>
+                        <input type="text" id="k5-display-remote-count" class="panel-input k5-counter-display" value="0" readonly>
+                        <button id="btn-k5-remote-subtract" class="k5-counter-btn" disabled>-</button>
+                    </div>
+                    <div class="k5-counter-group" id="k5-counter-charger">
+                        <button id="btn-k5-charger-add" class="k5-counter-btn" disabled>+</button>
+                        <input type="text" id="k5-display-charger-count" class="panel-input k5-counter-display" value="0" readonly>
+                        <button id="btn-k5-charger-subtract" class="k5-counter-btn" disabled>-</button>
+                    </div>
+                    <div class="k5-counter-group" id="k5-counter-cord">
+                        <button id="btn-k5-cord-add" class="k5-counter-btn" disabled>+</button>
+                        <input type="text" id="k5-display-cord-count" class="panel-input k5-counter-display" value="0" readonly>
+                        <button id="btn-k5-cord-subtract" class="k5-counter-btn" disabled>-</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="k5-content" class="tab-content">
+            <div class="k5-grid-layout">
+                <div class="k5-grid-row">
+                    <div class="k5-grid-group">
+                        <div class="k5-grid-cell-a">
+                            <button id="btn-k4-dual" class="feature-button">Dual</button>
+                        </div>
+                        <div class="k5-grid-cell-b">
+                            <div id="k4-dual-price-display" class="k4-price-box">
+                                <span class="price-value"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="k5-grid-group">
+                        <div class="k5-grid-cell-c">
+                            <button id="btn-k4-chain" class="feature-button">Chain</button>
+                        </div>
+                        <div class="k5-grid-cell-d">
+                            <input type="text" id="k4-input-display" class="panel-input k4-display-box" placeholder="Chain length..." disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="k5-grid-row">
+                    <div class="k5-grid-group">
+                        <div class="k5-grid-cell-label">Winder</div>
+                        <div class="k5-grid-cell-display">
+                            <input type="text" id="k5-display-winder-summary" class="panel-input k5-summary-display-box" readonly>
+                        </div>
+                    </div>
+                    <div class="k5-grid-group">
+                        <div class="k5-grid-cell-label">Motor</div>
+                        <div class="k5-grid-cell-display">
+                            <input type="text" id="k5-display-motor-summary" class="panel-input k5-summary-display-box" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="k5-grid-row">
+                    <div class="k5-grid-group">
+                        <div class="k5-grid-cell-label">Remote</div>
+                        <div class="k5-grid-cell-display">
+                            <input type="text" id="k5-display-remote-summary" class="panel-input k5-summary-display-box" readonly>
+                        </div>
+                    </div>
+                    <div class="k5-grid-group">
+                        <div class="k5-grid-cell-label">Charger</div>
+                        <div class="k5-grid-cell-display">
+                            <input type="text" id="k5-display-charger-summary" class="panel-input k5-summary-display-box" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="k5-grid-row">
+                    <div class="k5-grid-group">
+                        <div class="k5-grid-cell-label">3MCord</div>
+                        <div class="k5-grid-cell-display">
+                            <input type="text" id="k5-display-cord-summary" class="panel-input k5-summary-display-box" readonly>
+                        </div>
+                    </div>
+                    <div class="k5-grid-group k5-grid-group-total">
+                        <div class="k5-grid-cell-label">Total</div>
+                        <div class="k5-grid-cell-display">
+                            <input type="text" id="k5-display-accessories-total" class="panel-input k5-summary-display-box k5-summary-total-box" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="left-panel-toggle" title="Toggle Left Panel">
+    <svg class="toggle-arrow arrow-right" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+    </svg>
+    <svg class="toggle-arrow arrow-left" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+    </svg>
+</div>

@@ -1,0 +1,150 @@
+/* File: 04-core-code/ui/css/right-panel.css */
+
+@import url('./f1-grid.css');
+@import url('./f2-summary-table.css');
+
+/* --- Right Function Panel Base Styles --- */
+#function-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 290px;
+    height: 100%;
+    background-color: #e5e7eb;
+    border-left: 1px solid var(--panel-border-color);
+    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+    z-index: 100;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+#function-panel.is-expanded {
+    transform: translateX(0);
+}
+
+#function-panel-toggle {
+    position: absolute;
+    left: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 80px;
+    background-color: #e5e7eb;
+    border: 1px solid var(--panel-border-color);
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#function-panel-toggle .toggle-arrow {
+    width: 24px;
+    height: 24px;
+    transition: opacity 0.3s;
+    position: absolute;
+}
+
+#function-panel .arrow-left {
+    opacity: 1;
+}
+
+#function-panel .arrow-right {
+    opacity: 0;
+}
+
+#function-panel.is-expanded .arrow-left {
+    opacity: 0;
+}
+
+#function-panel.is-expanded .arrow-right {
+    opacity: 1;
+}
+
+/* --- Tab System Styles (Mirrors left-panel.css) --- */
+#function-panel .tab-container {
+    display: flex;
+    flex-shrink: 0;
+    background-color: #d1d5db;
+}
+
+#function-panel .tab-button {
+    height: 30px;
+    flex-grow: 1;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #4b5563;
+    transition: background-color 0.2s, color 0.2s;
+    border-radius: 6px 6px 0 0;
+    border-bottom: 3px solid transparent;
+}
+
+#function-panel .tab-button:hover {
+    background-color: #e5e7eb;
+}
+
+#function-panel .tab-button.active {
+    background-color: #f3f4f6; /* Lighter background for the active tab */
+    border-color: var(--tab-active-color);
+    color: var(--tab-active-color);
+}
+
+#function-panel .tab-button:disabled {
+    background-color: #6c757d !important;
+    color: #e9ecef !important;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+#function-panel .tab-content-container {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background-color: #f3f4f6;
+}
+
+#function-panel .tab-content {
+    display: none;
+}
+
+#function-panel .tab-content.active {
+    display: block;
+}
+
+/* --- Function Grid Styles (Now inside a tab) --- */
+.function-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Changed to 2 columns for better spacing */
+    gap: 10px;
+}
+
+.function-grid button {
+    width: 100%;
+    padding: 10px 5px;
+    font-size: 1em;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+.function-grid button:disabled {
+    background-color: #f3f4f6;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Specific button styles */
+#key-save { background-color: #dcfce7; }
+#key-load { background-color: #ffedd5; }
+#key-export { background-color: #d1fae5; }
+#key-reset { background-color: #ef4444; color: white; font-weight: bold; border-color: #dc2626; }

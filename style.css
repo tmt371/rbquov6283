@@ -1,0 +1,57 @@
+/* File: style.css */
+
+/* --- [REFACTOR] Import all component style modules --- */
+@import url('./04-core-code/ui/partials/left-panel.css');
+@import url('./04-core-code/ui/css/dialog.css');
+@import url('./04-core-code/ui/css/right-panel.css');
+@import url('./04-core-code/ui/css/f3-adjustments.css');
+@import url('./04-core-code/ui/css/virtual-keyboard.css');
+@import url('./04-core-code/ui/css/results-table.css');
+@import url('./04-core-code/ui/css/toast-notification.css');
+/* [REMOVED] */
+
+/* --- Global Variables --- */
+:root {
+    --panel-border-color: #d1d5db;
+    --keyboard-bg-color: #f3f4f6;
+    --app-bg-color: #ffffff;
+    --highlight-color: #a0d3e8;
+    --primary-color: #1a237e;
+    --medium-blue-color: #1976D2;
+    --header-border-color: #696969;
+}
+
+/* --- Base Styles --- */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5;
+    overflow: hidden;
+}
+
+/* --- App Container Layout --- */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: var(--app-bg-color);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.results-panel {
+    flex-grow: 1;
+    overflow-y: auto;
+    position: relative;
+    padding: 0 20px 20px 20px;
+    box-sizing: border-box;
+}
+
+/* [REFACTOR] All component-specific styles below this line have been
+    moved to their respective files in the /ui/css/ directory.
+    This file now only contains global settings and layout.
+*/

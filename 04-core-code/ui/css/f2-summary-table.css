@@ -1,0 +1,134 @@
+/* File: 04-core-code/ui/css/f2-summary-table.css */
+
+.f2-summary-grid {
+    display: grid;
+    /* Columns: A(label) B(value/input) C(value) */
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 4px 10px;
+    /* Vertical and horizontal gap */
+    align-items: center;
+}
+
+.f2-summary-grid>div,
+.f2-summary-grid>input {
+    font-size: 0.8em;
+    padding: 4px;
+    box-sizing: border-box;
+    min-height: 26px;
+    display: flex;
+    align-items: center;
+}
+
+.grid-cell-label {
+    font-weight: 500;
+    color: #374151;
+    white-space: nowrap;
+}
+
+.grid-cell-label.text-right {
+    justify-content: flex-end;
+}
+
+.grid-cell-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    justify-content: flex-end;
+    background-color: #e9ecef;
+    border-radius: 3px;
+    padding-right: 6px;
+}
+
+.grid-cell-input {
+    width: 100%;
+    border: 1px solid #b0b8c4;
+    border-radius: 3px;
+    text-align: right;
+    padding-right: 6px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.grid-cell-input::placeholder {
+    text-align: center;
+    font-style: italic;
+}
+
+.grid-cell-placeholder {
+    visibility: hidden;
+}
+
+.grid-span-3 {
+    grid-column: 1 / -1;
+    /* Span all 3 columns */
+}
+
+.grid-spacer {
+    min-height: 10px;
+}
+
+.section-header {
+    /* [MODIFIED] Changed to span 2 columns */
+    grid-column: 1 / span 2;
+    font-weight: bold;
+    color: #1f2937;
+    background-color: #d1d5db;
+    padding: 4px;
+    border-radius: 3px;
+    margin-top: 8px;
+    justify-content: center;
+    font-size: 0.85em;
+}
+
+/* [ADDED] Style for the total value in the header row */
+.section-header-total {
+    margin-top: 8px;
+    /* Aligns with the section-header */
+}
+
+
+/* Specific color overrides based on chart */
+#f2-b4-acce-sum,
+#f2-b11-e-acce-sum,
+#f2-b16-surcharge-fee,
+#f2-b22-sumprice,
+#f2-b24-gst {
+    background-color: #fffacd;
+    /* Light yellow */
+}
+
+#f2-b20-singleprofit,
+#f2-b21-rb-profit,
+#f2-b23-sumprofit,
+#f2-b25-netprofit,
+#f2-c17-1st-rb-price {
+    color: #c0392b;
+    /* Red */
+    background-color: #f8d7da;
+    /* Light pink */
+}
+
+/* --- Strikethrough Feature Styles --- */
+#f2-c13-delivery-fee,
+#f2-c14-install-fee,
+#f2-c15-removal-fee {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.is-excluded {
+    background-color: #f8d7da !important;
+    /* Light pink */
+    text-decoration: line-through;
+    color: #721c24;
+}
+
+
+/* Hide Number Input Spinners */
+.grid-cell-input[type=number]::-webkit-outer-spin-button,
+.grid-cell-input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.grid-cell-input[type=number] {
+    -moz-appearance: textfield;
+}

@@ -1,0 +1,171 @@
+/* /04-core-code/ui/css/f1-grid.css */
+
+.f1-grid {
+    display: grid;
+    /* Columns: A (label), B (quantity/label), C (amount) */
+    /* [MODIFIED] Rightmost column width reduced by 10% */
+    grid-template-columns: 1.2fr 0.8fr 0.9fr;
+    gap: 12px 10px;
+    /* Increased vertical gap */
+    align-items: center;
+    /* [MODIFIED] Base font size reduced by ~10% */
+    font-size: 13px;
+}
+
+/* --- Universal Cell Style --- */
+.f1-grid .grid-cell {
+    min-height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    /* Default to left-align */
+}
+
+/* --- Span Helpers --- */
+.f1-grid .grid-span-2 {
+    grid-column: span 2;
+}
+
+.f1-grid .grid-span-3 {
+    grid-column: span 3;
+}
+
+.f1-grid .grid-col-start-2 {
+    grid-column-start: 2;
+}
+
+/* --- Grouping Containers --- */
+.component-cost-group,
+.rb-pricing-group,
+.final-summary-group {
+    grid-column: 1 / -1;
+    border-radius: 8px;
+    /* [MODIFIED] Reduced horizontal padding to widen the component */
+    padding: 15px 8px;
+    display: grid;
+    grid-template-columns: subgrid;
+    gap: 8px 10px;
+}
+
+.component-cost-group {
+    border: 2px solid #6B8E23;
+    background-color: #f9f9f9;
+}
+
+.rb-pricing-group {
+    border: 2px solid #87CEEB;
+    /* SkyBlue */
+    background-color: #f0f8ff;
+    /* AliceBlue */
+}
+
+.final-summary-group {
+    border: 2px solid #DC143C;
+    /* Crimson */
+    background-color: #fffafa;
+    /* Snow */
+}
+
+/* --- Object Styles (Boxes) --- */
+.f1-grid .qty-box,
+.f1-grid .price-box,
+.f1-grid .input-box {
+    width: 100%;
+    min-height: 30px;
+    border: 1px solid #000000;
+    background-color: #ffffff;
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    font-family: "Menlo", "Consolas", monospace;
+}
+
+#f1-rb-discount-input {
+    border: 1px solid #000000;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.f1-grid .qty-box {
+    justify-content: center;
+}
+
+.f1-grid .price-box {
+    justify-content: flex-end;
+    font-weight: bold;
+}
+
+.f1-grid .input-box {
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* --- Color Palettes --- */
+.f1-grid .bg-bright-green {
+    background-color: #dcfce7;
+    border-color: #86efac;
+}
+
+.f1-grid .bg-light-purple {
+    background-color: #E6E6FA;
+    border-color: #b19cd9;
+}
+
+.f1-grid .bg-pink {
+    background-color: #FFF0F5;
+    border-color: #ffb6c1;
+}
+
+/* --- Typography & Alignment --- */
+.f1-grid .text-right {
+    justify-content: flex-end;
+}
+
+.f1-grid .font-bold {
+    font-weight: bold;
+}
+
+/* [MODIFIED] Prevent wrapping on all labels in the first column */
+.component-cost-group .grid-cell:first-child,
+.rb-pricing-group .grid-cell:first-child,
+.final-summary-group .grid-cell:first-child {
+    white-space: nowrap;
+}
+
+
+/* --- Alternating Background + Side Border --- */
+.f1-grid .group-row {
+    grid-column: 1 / -1;
+    /* Make the background span all 3 columns */
+    display: grid;
+    grid-template-columns: subgrid;
+    /* Inherit parent grid columns */
+    background-color: #f8f8f8;
+    /* [MODIFIED] Adjusted negative margin to match new padding */
+    margin: -4px -8px;
+    padding: 4px 8px;
+}
+
+.f1-grid .group-row-dual {
+    border-left: 3px solid #3b82f6;
+    /* Blue border */
+}
+
+.f1-grid .group-row-remote {
+    border-left: 3px solid #f97316;
+    /* Orange border */
+}
+
+/* --- Hide Number Input Spinners --- */
+.f1-grid input[type=number]::-webkit-outer-spin-button,
+.f1-grid input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.f1-grid input[type=number] {
+    -moz-appearance: textfield;
+}

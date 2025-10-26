@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detailed Item List</title>
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --border-dark-grey: #555555;
+            --border-light-grey: #dddddd;
+            --header-bg-color: #E6E6E6;
+            /* 10% 
+?色 */
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .page-container {
+            max-width: 900px; /* [MODIFIED] Set max-width to match the main quote page */
+ 
+           margin: auto;
+            padding: 20px;
+        }
+
+        .content-wrapper {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid #a0d3e8;
+        }
+
+        .main-header {
+            display: flex;
+justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 40px;
+        }
+
+        .main-header h1 {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin: 0;
+            color: #444;
+        }
+
+        .quote-number {
+            font-size: 16px;
+            color: #555;
+        }
+
+        h2 {
+ 
+           border-top: 2px solid #eee;
+            padding-top: 20px;
+            padding-bottom: 0;
+            margin-top: 40px;
+            margin-bottom: 0;
+            color: #444;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border: 2px solid var(--border-dark-grey);
+            table-layout: fixed; /* Use fixed layout for predictable column widths */
+        }
+
+   
+     th,
+        td {
+            border: 1px solid var(--border-light-grey);
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        thead th {
+            font-weight: 600;
+        }
+
+        tfoot {
+     
+       font-weight: bold;
+        }
+
+        tfoot td {
+            border-top: 2px solid #ccc;
+        }
+
+        .bg-blockout {
+            background-color: #f0f0f0;
+            /* Light Grey */
+        }
+
+        
+.bg-screen {
+            background-color: #e0f7fa;
+            /* Light Blue */
+        }
+
+        .bg-light-filter {
+            background-color: #ffe4e1;
+            /* Pink */
+        }
+
+        .table-title {
+         
+   background-color: var(--header-bg-color);
+            color: #333;
+            font-weight: bold;
+            font-size: 16px;
+            border-bottom: 2px solid var(--border-light-grey);
+        }
+
+        .total-row {
+            background-color: var(--header-bg-color);
+            font-weight: bold;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+     
+       text-align: right;
+        }
+
+        .legend {
+            margin-top: 40px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .legend h3 {
+            margin-top: 0;
+        }
+
+        .legend p {
+ 
+           margin: 8px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 1px solid #999;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .table-scroll-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: 
+touch;
+        }
+
+        .appendix-flex-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+            align-items: flex-start;
+        }
+
+/* <CHANGE> 分別設定兩個子元素的 flex 屬性，避免表格擠壓圖例 */
+.appendix-flex-container > .table-scroll-wrapper {
+    flex: 0 0 auto;        /* 不伸縮，根據內容決定寬度 */
+    max-width: 400px;      /* 最大寬度 400px */
+    min-width: 272px;      /* 最小寬度 272px */
+}
+
+.appendix-flex-container > .legend {
+    flex: 1;               /* 圖例佔用剩餘空間 */
+    min-width: 250px;      /* 確保圖例有足夠寬度 */
+}
+        
+        @media (max-width: 850px) {
+ 
+           .appendix-flex-container {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+               
+ padding: 10px;
+            }
+
+            .content-wrapper {
+                padding: 15px;
+            }
+
+            .main-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+        
+    .table-scroll-wrapper {
+                overflow-x: hidden;
+            }
+            .detailed-list-table {
+                border: none;
+                /* [MODIFIED] Force table to behave like a block element to ensure full width */
+         
+       display: block;
+                table-layout: auto;
+            }
+            .detailed-list-table thead {
+                border: none;
+                clip: rect(0 0 0 0);
+                height: 1px;
+                margin: -1px;
+                overflow: hidden;
+                padding: 0;
+                position: absolute;
+                width: 1px;
+            }
+            .detailed-list-table tr {
+   
+             display: block;
+                margin-bottom: 15px;
+                border: 1px solid var(--border-light-grey);
+                border-radius: 5px;
+                padding: 0;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            }
+            .detailed-list-table td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px 15px;
+                border: none;
+                border-bottom: 1px solid var(--border-light-grey);
+                text-align: right;
+            }
+  
+          /* [REMOVED] This rule was hiding empty cells (like HD, Dual) and is no longer needed. */
+            /* .detailed-list-table td.is-empty-cell {
+                display: none;
+            } */
+            .detailed-list-table tr td:last-child {
+  
+              border-bottom: none;
+            }
+            
+            .detailed-list-table td:before {
+                content: attr(data-label);
+                font-weight: 600;
+                text-align: left;
+                padding-right: 15px;
+            }
+           
+ .detailed-list-table td:first-of-type {
+                background-color: var(--header-bg-color);
+                color: #333;
+                font-weight: bold;
+                border-radius: 4px 4px 0 0;
+            }
+            .detailed-list-table td:first-of-type::before {
+                color: #333;
+            }
+
+            .motorised-accessories-table {
+  
+              table-layout: auto;
+                border: 1px solid var(--border-dark-grey);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page-container">
+        <div class="content-wrapper">
+            <div class="main-header">
+                <h1>Quotation Appendix</h1>
+ 
+               <div class="quote-number">
+                    <strong>Quote No:</strong> {{quoteId}}
+                </div>
+            </div>
+
+           
+ <div class="table-scroll-wrapper">
+                {{{rollerBlindsTable}}}
+            </div>
+
+            <div class="appendix-flex-container">
+                <div class="table-scroll-wrapper">
+                 
+   <table class="motorised-accessories-table">
+                        <colgroup>
+                            <col style="width: auto;">
+                   
+         <col style="width: auto;">
+                            <col style="width: auto;">
+                        </colgroup>
+            
+            <thead>
+                            <tr class="table-title">
+                                <th colspan="3">Motorised Accessories Summary</th>
+ 
+                           </tr>
+                            <tr>
+                      
+          <th>Item</th>
+                                <th class="text-center">QTY</th>
+                                <th class="text-right">Total 
+Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+ 
+                           <tr>
+                                <td data-label="Item">Motor</td>
+                 
+               <td data-label="QTY" class="text-center">{{motorQty}}</td>
+                                <td data-label="Total Price" class="text-right">{{motorPrice}}</td>
+                         
+   </tr>
+                            <tr>
+                                <td data-label="Item">Remote (1CH)</td>
+            
+                    <td data-label="QTY" class="text-center">{{remote1chQty}}</td>
+                                <td data-label="Total Price" class="text-right">{{remote1chPrice}}</td>
+                    
+        </tr>
+                            <tr>
+                                <td data-label="Item">Remote (16CH)</td>
+       
+                         <td data-label="QTY" class="text-center">{{remote16chQty}}</td>
+                                <td data-label="Total Price" class="text-right">{{remote16chPrice}}</td>
+               
+             </tr>
+                            <tr>
+                                <td data-label="Item">Charger</td>
+   
+                             <td data-label="QTY" class="text-center">{{chargerQty}}</td>
+                                <td data-label="Total Price" class="text-right">{{chargerPrice}}</td>
+           
+                 </tr>
+                            <tr>
+                                
+<td data-label="Item">3M Cord</td>
+                                <td data-label="QTY" class="text-center">{{cord3mQty}}</td>
+                                <td data-label="Total Price" class="text-right">{{cord3mPrice}}</td>
+      
+                      </tr>
+                        </tbody>
+                        <tfoot>
+       
+                     <tr class="total-row">
+                                <td colspan="2" class="text-right">Total</td>
+                     
+           <td class="text-right">{{eAcceSum}}</td>
+                            </tr>
+                        </tfoot>
+             
+       </table>
+                </div>
+
+                <div class="legend">
+                    <h3>Abbreviations Key</h3>
+                
+    <p><span class="color-swatch" style="background-color: #f0f0f0;"></span><strong>F-Name & F-Color:</strong> Blockout (BO)</p>
+                    <p><span class="color-swatch" style="background-color: #e0f7fa;"></span><strong>F-Name & F-Color:</strong> Screen (SN)</p>
+                    <p><span class="color-swatch" style="background-color: #ffe4e1;"></span><strong>F-Name & F-Color:</strong> Light Filter (LF)</p>
+           
+         <p><strong>HD:</strong> Heavy-Duty Winder</p>
+                    <p><strong>Dual:</strong> Double Bracket (for Dual Roller Blinds)</p>
+                </div>
+            </div>
+        </div>
+    
+</div>
+
+</body>
+
+</html>

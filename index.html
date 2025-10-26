@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ez Blinds Quotee v0.3 - Spreadsheet Mode</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:,">
+</head>
+
+<body>
+    <div id="app" class="app-container">
+        <div class="results-panel">
+            <table class="results-table" id="results-table">
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="keyboard-panel" id="numeric-keyboard-panel">
+
+            <div class="top-controls-container">
+
+                <div class="panel-toggle" id="panel-toggle" title="Toggle Keyboard">
+                    <svg class="toggle-arrow arrow-down" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                    </svg>
+                    <svg class="toggle-arrow arrow-up" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+                    </svg>
+                </div>
+
+                <button id="key-m-set">M-SET</button>
+
+                <div class="top-summary-container" id="top-summary-container">
+                    <span class="label">SUM</span>
+                    <span class="value is-current" id="total-sum-value"></span>
+                </div>
+            </div>
+
+
+            <div class="virtual-keyboard" id="numeric-keyboard">
+                <button id="key-7">7</button>
+                <button id="key-8">8</button>
+                <button id="key-9">9</button>
+                <button id="key-w">W</button>
+                <button id="key-type">Type</button>
+
+                <button id="key-4">4</button>
+                <button id="key-5">5</button>
+                <button id="key-6">6</button>
+                <button id="key-h">H</button>
+                <button id="key-price">$</button>
+
+                <button id="key-1">1</button>
+                <button id="key-2">2</button>
+                <button id="key-3">3</button>
+                <button id="key-enter">&#x23CE;</button>
+
+                <button id="key-ins-grid">Ins</button>
+
+                <button id="key-0">0</button>
+                <button id="key-del">&#x2B05;</button>
+                <button id="key-clear">C</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="function-panel">
+    </div>
+
+    <input type="file" id="file-loader" style="display: none;" accept=".json,.csv">
+    <div id="toast-container"></div>
+
+    <div id="confirmation-dialog-overlay" class="dialog-overlay is-hidden">
+        <div class="dialog-box">
+            <p class="dialog-message">The current quote contains unsaved data. What would you like to do?</p>
+            <div class="dialog-buttons">
+                <button class="dialog-button">Save then Load</button>
+                <button class="dialog-button">Load Directly</button>
+                <button class="dialog-button secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./04-core-code/main.js"></script>
+
+    <script>
+        // Conditionally load Eruda debugging tool only in development environment
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            var erudaScript = document.createElement('script');
+            erudaScript.src = '//cdn.jsdelivr.net/npm/eruda';
+            document.body.appendChild(erudaScript);
+            erudaScript.onload = function () {
+                eruda.init();
+            }
+        }
+    </script>
+</body>
+
+</html>
