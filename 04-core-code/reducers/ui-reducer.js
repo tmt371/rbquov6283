@@ -1,5 +1,4 @@
 // File: 04-core-code/reducers/ui-reducer.js
-(這是新增的檔案)
 import { UI_ACTION_TYPES } from '../config/action-types.js';
 import { initialState } from '../config/initial-state.js';
 
