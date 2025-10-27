@@ -11,8 +11,7 @@
             --border-dark-grey: #555555;
             --border-light-grey: #dddddd;
             --header-bg-color: #E6E6E6;
-            /* 10% 
-?色 */
+            /* 10% 灰 */
         }
 
         body {
@@ -25,8 +24,7 @@
 
         .page-container {
             max-width: 900px; /* [MODIFIED] Set max-width to match the main quote page */
- 
-           margin: auto;
+            margin: auto;
             padding: 20px;
         }
 
@@ -40,7 +38,7 @@
 
         .main-header {
             display: flex;
-justify-content: space-between;
+            justify-content: space-between;
             align-items: baseline;
             border-bottom: 2px solid #eee;
             padding-bottom: 10px;
@@ -60,8 +58,7 @@ justify-content: space-between;
         }
 
         h2 {
- 
-           border-top: 2px solid #eee;
+            border-top: 2px solid #eee;
             padding-top: 20px;
             padding-bottom: 0;
             margin-top: 40px;
@@ -73,14 +70,13 @@ justify-content: space-between;
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            border: 2px solid var(--border-dark-grey);
+            border: 1px solid #333; /* [MODIFIED] Add base border for compatibility */
             table-layout: fixed; /* Use fixed layout for predictable column widths */
         }
 
-   
-     th,
+        th,
         td {
-            border: 1px solid var(--border-light-grey);
+            border: 1px solid #333; /* [MODIFIED] Ensure all cells have borders */
             padding: 10px 12px;
             text-align: left;
             font-size: 14px;
@@ -92,8 +88,7 @@ justify-content: space-between;
         }
 
         tfoot {
-     
-       font-weight: bold;
+            font-weight: bold;
         }
 
         tfoot td {
@@ -105,8 +100,7 @@ justify-content: space-between;
             /* Light Grey */
         }
 
-        
-.bg-screen {
+        .bg-screen {
             background-color: #e0f7fa;
             /* Light Blue */
         }
@@ -117,8 +111,7 @@ justify-content: space-between;
         }
 
         .table-title {
-         
-   background-color: var(--header-bg-color);
+            background-color: var(--header-bg-color);
             color: #333;
             font-weight: bold;
             font-size: 16px;
@@ -135,8 +128,7 @@ justify-content: space-between;
         }
 
         .text-right {
-     
-       text-align: right;
+            text-align: right;
         }
 
         .legend {
@@ -152,8 +144,7 @@ justify-content: space-between;
         }
 
         .legend p {
- 
-           margin: 8px 0;
+            margin: 8px 0;
             display: flex;
             align-items: center;
         }
@@ -169,40 +160,35 @@ justify-content: space-between;
 
         .table-scroll-wrapper {
             overflow-x: auto;
-            -webkit-overflow-scrolling: 
-touch;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .appendix-flex-container {
-            display: flex;
-            gap: 20px;
+        /* [MODIFIED] Replaced flexbox with a table for email client compatibility */
+        .appendix-layout-table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 40px;
-            align-items: flex-start;
         }
-
-/* <CHANGE> 分別設定兩個子元素的 flex 屬性，避免表格擠壓圖例 */
-.appendix-flex-container > .table-scroll-wrapper {
-    flex: 0 0 auto;        /* 不伸縮，根據內容決定寬度 */
-    max-width: 400px;      /* 最大寬度 400px */
-    min-width: 272px;      /* 最小寬度 272px */
-}
-
-.appendix-flex-container > .legend {
-    flex: 1;               /* 圖例佔用剩餘空間 */
-    min-width: 250px;      /* 確保圖例有足夠寬度 */
-}
+        .appendix-layout-table td {
+            border: none;
+            padding: 0;
+            vertical-align: top;
+        }
         
         @media (max-width: 850px) {
- 
-           .appendix-flex-container {
-                flex-direction: column;
+            /* [NEW] On mobile, force table cells to stack */
+            .appendix-layout-table td {
+                display: block;
+                width: 100%;
+            }
+            .appendix-layout-table td:first-child {
+                margin-bottom: 20px; /* Add space between stacked items */
             }
         }
 
         @media (max-width: 768px) {
             .page-container {
-               
- padding: 10px;
+                padding: 10px;
             }
 
             .content-wrapper {
@@ -215,15 +201,13 @@ touch;
                 gap: 5px;
             }
 
-        
-    .table-scroll-wrapper {
+            .table-scroll-wrapper {
                 overflow-x: hidden;
             }
             .detailed-list-table {
                 border: none;
                 /* [MODIFIED] Force table to behave like a block element to ensure full width */
-         
-       display: block;
+                display: block;
                 table-layout: auto;
             }
             .detailed-list-table thead {
@@ -237,8 +221,7 @@ touch;
                 width: 1px;
             }
             .detailed-list-table tr {
-   
-             display: block;
+                display: block;
                 margin-bottom: 15px;
                 border: 1px solid var(--border-light-grey);
                 border-radius: 5px;
@@ -253,14 +236,8 @@ touch;
                 border-bottom: 1px solid var(--border-light-grey);
                 text-align: right;
             }
-  
-          /* [REMOVED] This rule was hiding empty cells (like HD, Dual) and is no longer needed. */
-            /* .detailed-list-table td.is-empty-cell {
-                display: none;
-            } */
             .detailed-list-table tr td:last-child {
-  
-              border-bottom: none;
+                border-bottom: none;
             }
             
             .detailed-list-table td:before {
@@ -269,8 +246,7 @@ touch;
                 text-align: left;
                 padding-right: 15px;
             }
-           
- .detailed-list-table td:first-of-type {
+            .detailed-list-table td:first-of-type {
                 background-color: var(--header-bg-color);
                 color: #333;
                 font-weight: bold;
@@ -281,8 +257,7 @@ touch;
             }
 
             .motorised-accessories-table {
-  
-              table-layout: auto;
+                table-layout: auto;
                 border: 1px solid var(--border-dark-grey);
             }
         }
@@ -295,105 +270,88 @@ touch;
         <div class="content-wrapper">
             <div class="main-header">
                 <h1>Quotation Appendix</h1>
- 
-               <div class="quote-number">
+                <div class="quote-number">
                     <strong>Quote No:</strong> {{quoteId}}
                 </div>
             </div>
 
-           
- <div class="table-scroll-wrapper">
+            <div class="table-scroll-wrapper">
                 {{{rollerBlindsTable}}}
             </div>
 
-            <div class="appendix-flex-container">
-                <div class="table-scroll-wrapper">
-                 
-   <table class="motorised-accessories-table">
-                        <colgroup>
-                            <col style="width: auto;">
-                   
-         <col style="width: auto;">
-                            <col style="width: auto;">
-                        </colgroup>
-            
-            <thead>
-                            <tr class="table-title">
-                                <th colspan="3">Motorised Accessories Summary</th>
- 
-                           </tr>
-                            <tr>
-                      
-          <th>Item</th>
-                                <th class="text-center">QTY</th>
-                                <th class="text-right">Total 
-Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
- 
-                           <tr>
-                                <td data-label="Item">Motor</td>
-                 
-               <td data-label="QTY" class="text-center">{{motorQty}}</td>
-                                <td data-label="Total Price" class="text-right">{{motorPrice}}</td>
-                         
-   </tr>
-                            <tr>
-                                <td data-label="Item">Remote (1CH)</td>
-            
-                    <td data-label="QTY" class="text-center">{{remote1chQty}}</td>
-                                <td data-label="Total Price" class="text-right">{{remote1chPrice}}</td>
-                    
-        </tr>
-                            <tr>
-                                <td data-label="Item">Remote (16CH)</td>
-       
-                         <td data-label="QTY" class="text-center">{{remote16chQty}}</td>
-                                <td data-label="Total Price" class="text-right">{{remote16chPrice}}</td>
-               
-             </tr>
-                            <tr>
-                                <td data-label="Item">Charger</td>
-   
-                             <td data-label="QTY" class="text-center">{{chargerQty}}</td>
-                                <td data-label="Total Price" class="text-right">{{chargerPrice}}</td>
-           
-                 </tr>
-                            <tr>
-                                
-<td data-label="Item">3M Cord</td>
-                                <td data-label="QTY" class="text-center">{{cord3mQty}}</td>
-                                <td data-label="Total Price" class="text-right">{{cord3mPrice}}</td>
-      
-                      </tr>
-                        </tbody>
-                        <tfoot>
-       
-                     <tr class="total-row">
-                                <td colspan="2" class="text-right">Total</td>
-                     
-           <td class="text-right">{{eAcceSum}}</td>
-                            </tr>
-                        </tfoot>
-             
-       </table>
-                </div>
-
-                <div class="legend">
-                    <h3>Abbreviations Key</h3>
-                
-    <p><span class="color-swatch" style="background-color: #f0f0f0;"></span><strong>F-Name & F-Color:</strong> Blockout (BO)</p>
-                    <p><span class="color-swatch" style="background-color: #e0f7fa;"></span><strong>F-Name & F-Color:</strong> Screen (SN)</p>
-                    <p><span class="color-swatch" style="background-color: #ffe4e1;"></span><strong>F-Name & F-Color:</strong> Light Filter (LF)</p>
-           
-         <p><strong>HD:</strong> Heavy-Duty Winder</p>
-                    <p><strong>Dual:</strong> Double Bracket (for Dual Roller Blinds)</p>
-                </div>
-            </div>
+            <table class="appendix-layout-table" border="0" cellpadding="0" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <td style="padding-bottom: 20px;"> <div class="table-scroll-wrapper">
+                                <table class="motorised-accessories-table" border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border: 1px solid #333;">
+                                    <colgroup>
+                                        <col style="width: auto;">
+                                        <col style="width: auto;">
+                                        <col style="width: auto;">
+                                    </colgroup>
+                                    <thead>
+                                        <tr class="table-title">
+                                            <th colspan="3" style="border: 1px solid #333;">Motorised Accessories Summary</th>
+                                        </tr>
+                                        <tr>
+                                            <th style="border: 1px solid #333;">Item</th>
+                                            <th class="text-center" style="border: 1px solid #333;">QTY</th>
+                                            <th class="text-right" style="border: 1px solid #333;">Total Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td data-label="Item" style="border: 1px solid #333;">Motor</td>
+                                            <td data-label="QTY" class="text-center" style="border: 1px solid #333;">{{motorQty}}</td>
+                                            <td data-label="Total Price" class="text-right" style="border: 1px solid #333;">{{motorPrice}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td data-label="Item" style="border: 1px solid #333;">Remote (1CH)</td>
+                                            <td data-label="QTY" class="text-center" style="border: 1px solid #333;">{{remote1chQty}}</td>
+                                            <td data-label="Total Price" class="text-right" style="border: 1px solid #333;">{{remote1chPrice}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td data-label="Item" style="border: 1px solid #333;">Remote (16CH)</td>
+                                            <td data-label="QTY" class="text-center" style="border: 1px solid #333;">{{remote16chQty}}</td>
+                                            <td data-label="Total Price" class="text-right" style="border: 1px solid #333;">{{remote16chPrice}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td data-label="Item" style="border: 1px solid #333;">Charger</td>
+                                            <td data-label="QTY" class="text-center" style="border: 1px solid #333;">{{chargerQty}}</td>
+                                            <td data-label="Total Price" class="text-right" style="border: 1px solid #333;">{{chargerPrice}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td data-label="Item" style="border: 1px solid #333;">3M Cord</td>
+                                            <td data-label="QTY" class="text-center" style="border: 1px solid #333;">{{cord3mQty}}</td>
+                                            <td data-label="Total Price" class="text-right" style="border: 1px solid #333;">{{cord3mPrice}}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="total-row">
+                                            <td colspan="2" class="text-right" style="border: 1px solid #333;">Total</td>
+                                            <td class="text-right" style="border: 1px solid #333;">{{eAcceSum}}</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                             <div class="legend">
+                                <h3>Abbreviations Key</h3>
+                                <p><span class="color-swatch" style="background-color: #f0f0f0;"></span><strong>F-Name & F-Color:</strong> Blockout (BO)</p>
+                                <p><span class="color-swatch" style="background-color: #e0f7fa;"></span><strong>F-Name & F-Color:</strong> Screen (SN)</p>
+                                <p><span class="color-swatch" style="background-color: #ffe4e1;"></span><strong>F-Name & F-Color:</strong> Light Filter (LF)</p>
+                                <p><strong>HD:</strong> Heavy-Duty Winder</p>
+                                <p><strong>Dual:</strong> Double Bracket (for Dual Roller Blinds)</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    
-</div>
+    </div>
 
 </body>
 

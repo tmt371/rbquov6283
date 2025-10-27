@@ -200,6 +200,7 @@
 
         .summary-details table {
             width: 100%;
+            border-collapse: collapse; /* [NEW] Add for consistency */
         }
 
         .summary-details td {
@@ -236,6 +237,16 @@
             width: 100%;
             border-collapse: collapse;
         }
+        /* [NEW] Add a specific class for the main layout table cells */
+        .layout-cell {
+            width: 50%;
+            vertical-align: top;
+            padding: 0 10px;
+        }
+        /* Remove padding from the first and last cells to align with container */
+        .layout-cell.first { padding-left: 0; }
+        .layout-cell.last { padding-right: 0; }
+
 
         .payment-info {
             width: 100%; /* [MODIFIED] Set to 100% to fit inside table cell */
@@ -371,11 +382,11 @@
             /* [NEW] Force table layout cells to stack on mobile */
             .summary-payment-wrapper .layout-cell {
                 display: block;
-                width: 100%;
+                width: 100% !important; /* Use !important to override inline width */
                 box-sizing: border-box;
                 padding: 0 !important; /* Reset padding */
             }
-            .summary-payment-wrapper .layout-cell:first-child {
+            .summary-payment-wrapper .layout-cell.summary-cell-wrapper {
                 margin-bottom: 20px; /* Add space between stacked elements */
             }
 
@@ -480,7 +491,7 @@
 
                 <section class="items-section">
                     <div class="table-scroll-wrapper">
-                        <table class="items-table" border="1" cellpadding="0" cellspacing="0">
+                        <table class="items-table" border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border: 1px solid #333;">
                             <colgroup>
                                 <col style="width: 8%;">
                                 <col style="width: 42%;">
@@ -490,11 +501,11 @@
                             </colgroup>
                             <thead>
                                 <tr>
-                                    <th>NO</th>
-                                    <th>Description</th>
-                                    <th class="align-right">QTY</th>
-                                    <th class="align-right">Price</th>
-                                    <th class="align-right">Discounted Price</th>
+                                    <th style="border: 1px solid #333;">NO</th>
+                                    <th style="border: 1px solid #333;">Description</th>
+                                    <th class="align-right" style="border: 1px solid #333;">QTY</th>
+                                    <th class="align-right" style="border: 1px solid #333;">Price</th>
+                                    <th class="align-right" style="border: 1px solid #333;">Discounted Price</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -507,41 +518,10 @@
                 <table class="summary-payment-wrapper" border="0" cellpadding="0" cellspacing="0" width="100%">
                     <tbody>
                         <tr>
-                            <td class="layout-cell" width="50%" style="padding-right: 10px; vertical-align: top;">
-                                <section class="payment-info">
-                                    <h4>Payment Method</h4>
-                                    <table class="payment-table">
-                                        <tbody>
-                                            <tr>
-                                                <td>Bank</td>
-                                                <td>CBA</td>
-                                            </tr>
-                                            <tr>
-                                                <td>BSB</td>
-                                                <td>0 6 2 &nbsp;&nbsp; 6 9 2</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Account</td>
-                                                <td>4 5 7 0 &nbsp;&nbsp; 8 8 7 7</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Name</td>
-                                                <td>Alphalead &nbsp;Pty &nbsp;Ltd</td>
-                                            </tr>
-                                            <tr>
-                                                <td>PayID</td>
-                                                <td>6 2 7 &nbsp;&nbsp; 4 2 0 &nbsp;&nbsp; 7 7 7</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <p style="font-size: 12px; margin-top: 10px;"><em>Please leave your Ph. number as Ref. in the
-                                            transaction.</em></p>
-                                </section>
-                            </td>
-                            <td class="layout-cell" width="50%" style="padding-left: 10px; vertical-align: top;">
+                            <td class="layout-cell summary-cell-wrapper" width="50%" style="padding-right: 10px; vertical-align: top;">
                                 <section class="summary-section">
                                     <div class="summary-details">
-                                        <table>
+                                        <table border="0" cellpadding="0" cellspacing="0">
                                             <tbody>
                                                 <tr>
                                                     <td class="summary-label">Subtotal</td>
@@ -570,6 +550,37 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                </section>
+                            </td>
+                            <td class="layout-cell payment-cell-wrapper" width="50%" style="padding-left: 10px; vertical-align: top;">
+                                <section class="payment-info">
+                                    <h4>Payment Method</h4>
+                                    <table class="payment-table" border="0" cellpadding="0" cellspacing="0">
+                                        <tbody>
+                                            <tr>
+                                                <td>Bank</td>
+                                                <td>CBA</td>
+                                            </tr>
+                                            <tr>
+                                                <td>BSB</td>
+                                                <td>0 6 2 &nbsp;&nbsp; 6 9 2</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Account</td>
+                                                <td>4 5 7 0 &nbsp;&nbsp; 8 8 7 7</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Name</td>
+                                                <td>Alphalead &nbsp;Pty &nbsp;Ltd</td>
+                                            </tr>
+                                            <tr>
+                                                <td>PayID</td>
+                                                <td>6 2 7 &nbsp;&nbsp; 4 2 0 &nbsp;&nbsp; 7 7 7</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p style="font-size: 12px; margin-top: 10px;"><em>Please leave your Ph. number as Ref. in the
+                                            transaction.</em></p>
                                 </section>
                             </td>
                         </tr>
