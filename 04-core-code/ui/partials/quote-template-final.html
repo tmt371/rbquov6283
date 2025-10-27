@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{documentTitle}}</title>
     <style>
-        /* --- 通用樣式與變數 --- */
+        /* --- 通用樣式 --- */
         :root {
             --primary-color: #1a237e;
-            /* 深藍色 */
+            /* 深藍 */
             --border-color: #e0e0e0;
-            /* 邊框顏色 */
+            /* 淺灰 */
             --text-color: #333;
             --success-color: #2e7d32;
-            /* 綠色，用於節省金額 */
+            /* 綠色，用於折扣 */
             --icon-color: #888888;
         }
 
@@ -70,7 +70,7 @@
             justify-content: flex-end;
         }
 
-        /* 報價單資訊 */
+        /* 單據資訊 */
         .quotation-meta {
             text-align: left;
         }
@@ -118,11 +118,12 @@
             line-height: 1.6;
         }
 
-        /* --- 項目表格 --- */
+        /* --- 品項表格 --- */
         .items-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 30px;
+            border: 1px solid #333; /* [MODIFIED] Add base border for compatibility */
         }
 
         .items-table thead {
@@ -130,10 +131,12 @@
             color: #ffffff;
         }
 
-        .items-table th {
+        .items-table th,
+        .items-table td {
             padding: 12px 15px;
             text-align: left;
             font-weight: 600;
+            border: 1px solid #333; /* [MODIFIED] Ensure all cells have borders */
         }
 
         .items-table tbody tr {
@@ -141,8 +144,8 @@
         }
 
         .items-table td {
-            padding: 12px 15px;
             vertical-align: top;
+            font-weight: normal; /* [MODIFIED] Reset font-weight for td */
         }
 
         .items-table .description {
@@ -186,7 +189,7 @@
             border: 1px solid var(--border-color);
             border-radius: 4px;
             padding: 6px 20px 20px 20px;
-            width: 50%;
+            width: 100%; /* [MODIFIED] Set to 100% to fit inside table cell */
             box-sizing: border-box;
         }
 
@@ -228,16 +231,14 @@
             font-weight: bold;
         }
 
-        /* --- Wrapper for Summary and Payment sections --- */
+        /* --- [MODIFIED] Wrapper for Summary and Payment sections using TABLE layout --- */
         .summary-payment-wrapper {
-            display: flex;
-            flex-direction: row;
-            gap: 20px;
-            align-items: flex-start;
+            width: 100%;
+            border-collapse: collapse;
         }
 
         .payment-info {
-            width: 50%;
+            width: 100%; /* [MODIFIED] Set to 100% to fit inside table cell */
             margin-top: 0;
             box-sizing: border-box;
             border: 1px solid var(--border-color);
@@ -268,20 +269,19 @@
             border-bottom: none;
         }
 
-/* <CHANGE> 為最後一橫行（PayID）加上極淺灰色背景 */
-.payment-table tr:last-child {
-    background-color: #f5f5f5;
-}
+        .payment-table tr:last-child {
+            background-color: #f5f5f5;
+        }
         .payment-table td:first-child {
             font-weight: bold;
             width: 80px;
-            text-align: right;      /* [MODIFIED] */
-            padding-right: 2px;     /* [MODIFIED] */
+            text-align: right;
+            padding-right: 2px;
         }
         .payment-table td:nth-child(2) {
-            text-align: left;       /* [ADDED] */
-            padding-left: 4px;      /* [ADDED] */
-            border-left: 1px solid var(--border-color); /* [ADDED] */
+            text-align: left;
+            padding-left: 4px;
+            border-left: 1px solid var(--border-color);
         }
         
         .payment-info strong {
@@ -368,23 +368,15 @@
                 margin-right: 8px;
             }
 
-            .summary-section {
-                justify-content: center;
-                padding: 0;
-                border: none;
+            /* [NEW] Force table layout cells to stack on mobile */
+            .summary-payment-wrapper .layout-cell {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 0 !important; /* Reset padding */
             }
-
-            .summary-payment-wrapper {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .summary-payment-wrapper .summary-section {
-                order: 1;
-            }
-
-            .summary-payment-wrapper .payment-info {
-                order: 2;
+            .summary-payment-wrapper .layout-cell:first-child {
+                margin-bottom: 20px; /* Add space between stacked elements */
             }
 
             .payment-info,
@@ -488,7 +480,7 @@
 
                 <section class="items-section">
                     <div class="table-scroll-wrapper">
-                        <table class="items-table">
+                        <table class="items-table" border="1" cellpadding="0" cellspacing="0">
                             <colgroup>
                                 <col style="width: 8%;">
                                 <col style="width: 42%;">
@@ -512,70 +504,77 @@
                     </div>
                 </section>
 
-                <div class="summary-payment-wrapper">
-                    <section class="payment-info">
-                        <h4>Payment Method</h4>
-                        <table class="payment-table">
-                            <tbody>
-                                <tr>
-                                    <td>Bank</td>
-                                    <td>CBA</td>
-                                </tr>
-                                <tr>
-                                    <td>BSB</td>
-                                    <td>0 6 2 &nbsp;&nbsp; 6 9 2</td>
-                                </tr>
-                                <tr>
-                                    <td>Account</td>
-                                    <td>4 5 7 0 &nbsp;&nbsp; 8 8 7 7</td>
-                                </tr>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Alphalead &nbsp;Pty &nbsp;Ltd</td>
-                                </tr>
-                                <tr>
-                                    <td>PayID</td>
-                                    <td>6 2 7 &nbsp;&nbsp; 4 2 0 &nbsp;&nbsp; 7 7 7</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <p style="font-size: 12px; margin-top: 10px;"><em>Please leave your Ph. number as Ref. in the
-                                transaction.</em></p>
-                    </section>
-
-                    <section class="summary-section">
-                        <div class="summary-details">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="summary-label">Subtotal</td>
-                                        <td class="summary-value">{{subtotal}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="summary-label">GST (10%)</td>
-                                        <td class="summary-value">{{gst}}</td>
-                                    </tr>
-                                    <tr class="grand-total">
-                                        <td class="summary-label">Our Offer</td>
-                                        <td class="summary-value">{{grandTotal}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="summary-label">Deposit (50%)</td>
-                                        <td class="summary-value">{{deposit}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="summary-label"><strong>Balance</strong></td>
-                                        <td class="summary-value"><strong>{{balance}}</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="summary-label">You Saved</td>
-                                        <td class="summary-value savings-value">{{savings}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </section>
-                </div>
+                <table class="summary-payment-wrapper" border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <td class="layout-cell" width="50%" style="padding-right: 10px; vertical-align: top;">
+                                <section class="payment-info">
+                                    <h4>Payment Method</h4>
+                                    <table class="payment-table">
+                                        <tbody>
+                                            <tr>
+                                                <td>Bank</td>
+                                                <td>CBA</td>
+                                            </tr>
+                                            <tr>
+                                                <td>BSB</td>
+                                                <td>0 6 2 &nbsp;&nbsp; 6 9 2</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Account</td>
+                                                <td>4 5 7 0 &nbsp;&nbsp; 8 8 7 7</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Name</td>
+                                                <td>Alphalead &nbsp;Pty &nbsp;Ltd</td>
+                                            </tr>
+                                            <tr>
+                                                <td>PayID</td>
+                                                <td>6 2 7 &nbsp;&nbsp; 4 2 0 &nbsp;&nbsp; 7 7 7</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p style="font-size: 12px; margin-top: 10px;"><em>Please leave your Ph. number as Ref. in the
+                                            transaction.</em></p>
+                                </section>
+                            </td>
+                            <td class="layout-cell" width="50%" style="padding-left: 10px; vertical-align: top;">
+                                <section class="summary-section">
+                                    <div class="summary-details">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="summary-label">Subtotal</td>
+                                                    <td class="summary-value">{{subtotal}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="summary-label">GST (10%)</td>
+                                                    <td class="summary-value">{{gst}}</td>
+                                                </tr>
+                                                <tr class="grand-total">
+                                                    <td class="summary-label">Our Offer</td>
+                                                    <td class="summary-value">{{grandTotal}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="summary-label">Deposit (50%)</td>
+                                                    <td class="summary-value">{{deposit}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="summary-label"><strong>Balance</strong></td>
+                                                    <td class="summary-value"><strong>{{balance}}</strong></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="summary-label">You Saved</td>
+                                                    <td class="summary-value savings-value">{{savings}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </section>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <section class="notes-terms-box">
                     <h4>General Notes</h4>
