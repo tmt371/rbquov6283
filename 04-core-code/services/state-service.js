@@ -15,6 +15,7 @@ export class StateService {
     constructor({ initialState, eventAggregator, productFactory, configManager }) {
         this._state = initialState;
         this.eventAggregator = eventAggregator;
+        // [MODIFIED] Pass dependencies to the createRootReducer function.
         this.reducer = createRootReducer({ productFactory, configManager });
         console.log("StateService Finalized and refactored for Reducer pattern.");
     }
