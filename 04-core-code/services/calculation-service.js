@@ -292,4 +292,81 @@ export class CalculationService {
             netProfit
         };
     }
+
+    /**
+     * [NEW] Gathers all necessary data for the quote template.
+     * This method is the new home for the logic previously in QuoteGeneratorService._prepareTemplateData.
+     * @param {object} quoteData - The current quote data from the state.
+     * @param {object} ui - The current UI state.
+     * @param {object} f3Data - Data from the F3 form fields.
+     * @returns {object} A comprehensive data object ready for template population.
+     */
+    getQuoteTemplateData(quoteData, ui, f3Data) {
+        const summaryData = this.calculateF2Summary(quoteData, ui);
+        const grandTotal = parseFloat(f3Data.finalOfferPrice) || summaryData.gst || 0;
+        const items = quoteData.products.rollerBlind.items;
+        const formatPrice = (price) => (typeof price === 'number' && price > 0) ? `$${price.toFixed(2)}` : '';
+
+        const motorQty = items.filter(item => !!item.motor).length;
+        const motorPrice = (this.configManager.getAccessoryPrice('motorStandard') || 0) * motorQty;
+
+        const totalRemoteQty = ui.driveRemoteCount || 0;
+        const remote1chQty = ui.f1.remote_1ch_qty;
+        const remote16chQty = (ui.f1.remote_1ch_qty === null) ? totalRemoteQty : (totalRemoteQty - remote1chQty);
+        const remotePricePerUnit = this.configManager.getAccessoryPrice('remoteStandard') || 0;
+        const remote1chPrice = remotePricePerUnit * remote1chQty;
+        const remote16chPrice = remotePricePerUnit * remote16chQty;
+
+        const chargerQty = ui.driveChargerCount || 0;
+        const chargerPrice = (this.configManager.getAccessoryPrice('chargerStandard') || 0) * chargerQty;
+
+        const cord3mQty = ui.driveCordCount || 0;
+        const cord3mPrice = (this.configManager.getAccessoryPrice('cord3m') || 0) * cord3mQty;
+
+        let documentTitleParts = [];
+        if (f3Data.quoteId) documentTitleParts.push(f3Data.quoteId);
+        if (f3Data.customerName) documentTitleParts.push(f3Data.customerName);
+        if (f3Data.customerPhone) documentTitleParts.push(f3Data.customerPhone);
+        const documentTitle = documentTitleParts.join(' ');
+
+        return {
+            documentTitle: documentTitle,
+            quoteId: f3Data.quoteId,
+            issueDate: f3Data.issueDate,
+            dueDate: f3Data.dueDate,
+            customerName: f3Data.customerName, // [NEW] Added for direct access in template
+            customerAddress: f3Data.customerAddress, // [NEW]
+            customerPhone: f3Data.customerPhone, // [NEW]
+            customerEmail: f3Data.customerEmail, // [NEW]
+            subtotal: `$${(summaryData.sumPrice || 0).toFixed(2)}`,
+            gst: `$${(grandTotal / 1.1 * 0.1).toFixed(2)}`,
+            grandTotal: `$${grandTotal.toFixed(2)}`,
+            deposit: `$${(grandTotal * 0.5).toFixed(2)}`,
+            balance: `$${(grandTotal * 0.5).toFixed(2)}`,
+            savings: `$${((summaryData.firstRbPrice || 0) - (summaryData.disRbPrice || 0)).toFixed(2)}`,
+            generalNotes: (f3Data.generalNotes || '').replace(/\n/g, '<br>'),
+            termsAndConditions: (f3Data.termsConditions || 'Standard terms and conditions apply.').replace(/\n/g, '<br>'),
+            
+            // Data for the detailed list (Appendix)
+            items: items,
+            mulTimes: summaryData.mulTimes || 1,
+            
+            // Data for the accessories table (Appendix)
+            motorQty: motorQty || '',
+            motorPrice: formatPrice(motorPrice),
+            remote1chQty: remote1chQty || '',
+            remote1chPrice: formatPrice(remote1chPrice),
+            remote16chQty: remote16chQty || '',
+            remote16chPrice: formatPrice(remote16chPrice),
+            chargerQty: chargerQty || '',
+            chargerPrice: formatPrice(chargerPrice),
+            cord3mQty: cord3mQty || '',
+            cord3mPrice: formatPrice(cord3mPrice),
+            eAcceSum: formatPrice(summaryData.eAcceSum),
+
+            // Pass the entire summary for flexibility
+            summaryData: summaryData,
+            uiState: ui
+        };
+    }
 }

@@ -82,8 +82,18 @@ export class QuoteGeneratorService {
             return null;
         }
 
-        const templateData = this._prepareTemplateData(quoteData, ui, f3Data);
-        const populatedDetailsPageHtml = this._populateTemplate(this.detailsTemplate, templateData);
+        // [REFACTORED] Delegate all data preparation to CalculationService.
+        const templateData = this.calculationService.getQuoteTemplateData(quoteData, ui, f3Data);
+
+        // [REFACTORED] Generate HTML snippets using the prepared data.
+        const populatedDataWithHtml = {
+            ...templateData,
+            customerInfoHtml: this._formatCustomerInfo(templateData),
+            itemsTableBody: this._generatePageOneItemsTableHtml(templateData),
+            rollerBlindsTable: this._generateItemsTableHtml(templateData)
+        };
+        
+        const populatedDetailsPageHtml = this._populateTemplate(this.detailsTemplate, populatedDataWithHtml);
 
         const styleMatch = populatedDetailsPageHtml.match(/<style>([\s\S]*)<\/style>/i);
         const detailsBodyMatch = populatedDetailsPageHtml.match(/<body[^>]*>([\s\S]*)<\/body>/i);
@@ -97,7 +107,7 @@ export class QuoteGeneratorService {
 
         let finalHtml = this.quoteTemplate.replace('</head>', `${detailsStyleContent}</head>`);
         finalHtml = finalHtml.replace('</body>', `${detailsBodyContent}</body>`);
-        finalHtml = this._populateTemplate(finalHtml, templateData);
+        finalHtml = this._populateTemplate(finalHtml, populatedDataWithHtml);
 
         // [NEW] Inject the action bar and script into the final HTML
         finalHtml = finalHtml.replace(
@@ -113,84 +123,23 @@ export class QuoteGeneratorService {
         return finalHtml;
     }
 
-    _prepareTemplateData(quoteData, ui, f3Data) {
-        const summaryData = this.calculationService.calculateF2Summary(quoteData, ui);
-        const grandTotal = parseFloat(f3Data.finalOfferPrice) || summaryData.gst || 0;
-        const items = quoteData.products.rollerBlind.items;
-        const formatPrice = (price) => (typeof price === 'number' && price > 0) ? `$${price.toFixed(2)}` : '';
-
-        const configManager = this.calculationService.configManager;
-
-        const motorQty = items.filter(item => !!item.motor).length;
-        const motorPrice = (configManager.getAccessoryPrice('motorStandard') || 0) * motorQty;
-
-        const totalRemoteQty = ui.driveRemoteCount || 0;
-        const remote1chQty = ui.f1.remote_1ch_qty;
-        const remote16chQty = (ui.f1.remote_1ch_qty === null) ? totalRemoteQty : (totalRemoteQty - remote1chQty);
-        const remotePricePerUnit = configManager.getAccessoryPrice('remoteStandard') || 0;
-        const remote1chPrice = remotePricePerUnit * remote1chQty;
-        const remote16chPrice = remotePricePerUnit * remote16chQty;
-
-        const chargerQty = ui.driveChargerCount || 0;
-        const chargerPrice = (configManager.getAccessoryPrice('chargerStandard') || 0) * chargerQty;
-
-        const cord3mQty = ui.driveCordCount || 0;
-        const cord3mPrice = (configManager.getAccessoryPrice('cord3m') || 0) * cord3mQty;
-
-        let documentTitleParts = [];
-        if (f3Data.quoteId) documentTitleParts.push(f3Data.quoteId);
-        if (f3Data.customerName) documentTitleParts.push(f3Data.customerName);
-        if (f3Data.customerPhone) documentTitleParts.push(f3Data.customerPhone);
-        const documentTitle = documentTitleParts.join(' ');
-
-        return {
-            documentTitle: documentTitle,
-            quoteId: f3Data.quoteId,
-            issueDate: f3Data.issueDate,
-            dueDate: f3Data.dueDate,
-            customerInfoHtml: this._formatCustomerInfo(f3Data),
-            itemsTableBody: this._generatePageOneItemsTableHtml(summaryData, quoteData, ui),
-            subtotal: `$${(summaryData.sumPrice || 0).toFixed(2)}`,
-            gst: `$${(grandTotal / 1.1 * 0.1).toFixed(2)}`,
-            grandTotal: `$${grandTotal.toFixed(2)}`,
-            deposit: `$${(grandTotal * 0.5).toFixed(2)}`,
-            balance: `$${(grandTotal * 0.5).toFixed(2)}`,
-            savings: `$${((summaryData.firstRbPrice || 0) - (summaryData.disRbPrice || 0)).toFixed(2)}`,
-            // [MODIFIED] Correctly add the generalNotes property to the data object
-            generalNotes: (f3Data.generalNotes || '').replace(/\n/g, '<br>'),
-            termsAndConditions: (f3Data.termsConditions || 'Standard terms and conditions apply.').replace(/\n/g, '<br>'),
-            rollerBlindsTable: this._generateItemsTableHtml(items, summaryData),
-            motorQty: motorQty || '',
-            motorPrice: formatPrice(motorPrice),
-            remote1chQty: remote1chQty || '',
-            remote1chPrice: formatPrice(remote1chPrice),
-            remote16chQty: remote16chQty || '',
-            remote16chPrice: formatPrice(remote16chPrice),
-            chargerQty: chargerQty || '',
-            chargerPrice: formatPrice(chargerPrice),
-            cord3mQty: cord3mQty || '',
-            cord3mPrice: formatPrice(cord3mPrice),
-            eAcceSum: formatPrice(summaryData.eAcceSum),
-        };
-    }
-
     _populateTemplate(template, data) {
         return template.replace(/\{\{\{?([\w\-]+)\}\}\}?/g, (match, key) => {
             return data.hasOwnProperty(key) ? data[key] : match;
         });
     }
 
-    _formatCustomerInfo(f3Data) {
-        let html = `<strong>${f3Data.customerName || ''}</strong><br>`;
-        if (f3Data.customerAddress) html += `${f3Data.customerAddress.replace(/\n/g, '<br>')}<br>`;
-        if (f3Data.customerPhone) html += `Phone: ${f3Data.customerPhone}<br>`;
-        if (f3Data.customerEmail) html += `Email: ${f3Data.customerEmail}`;
+    _formatCustomerInfo(templateData) {
+        let html = `<strong>${templateData.customerName || ''}</strong><br>`;
+        if (templateData.customerAddress) html += `${templateData.customerAddress.replace(/\n/g, '<br>')}<br>`;
+        if (templateData.customerPhone) html += `Phone: ${templateData.customerPhone}<br>`;
+        if (templateData.customerEmail) html += `Email: ${templateData.customerEmail}`;
         return html;
     }
 
-    _generateItemsTableHtml(items, summaryData) {
+    _generateItemsTableHtml(templateData) {
+        const { items, mulTimes } = templateData;
         const headers = ['#', 'F-NAME', 'F-COLOR', 'Location', 'HD', 'Dual', 'Motor', 'Price'];
-        const mulTimes = summaryData.mulTimes || 1;
     
         const rows = items
             .filter(item => item.width && item.height)
@@ -254,9 +203,9 @@ export class QuoteGeneratorService {
         `;
     }
 
-    _generatePageOneItemsTableHtml(summaryData, quoteData, ui) {
+    _generatePageOneItemsTableHtml(templateData) {
+        const { summaryData, uiState, items } = templateData;
         const rows = [];
-        const items = quoteData.products.rollerBlind.items;
         const validItemCount = items.filter(i => i.width && i.height).length;
 
         rows.push(`
@@ -299,20 +248,20 @@ export class QuoteGeneratorService {
             `);
         }
 
-        const deliveryExcluded = ui.f2.deliveryFeeExcluded;
+        const deliveryExcluded = uiState.f2.deliveryFeeExcluded;
         const deliveryPriceClass = deliveryExcluded ? 'class="align-right is-excluded"' : 'class="align-right"';
         const deliveryDiscountedPrice = deliveryExcluded ? 0 : (summaryData.deliveryFee || 0);
         rows.push(`
             <tr>
                 <td data-label="NO">${itemNumber++}</td>
                 <td data-label="Description" class="description">Delivery</td>
-                <td data-label="QTY" class="align-right">${ui.f2.deliveryQty || 1}</td>
+                <td data-label="QTY" class="align-right">${uiState.f2.deliveryQty || 1}</td>
                 <td data-label="Price" ${deliveryPriceClass}>$${(summaryData.deliveryFee || 0).toFixed(2)}</td>
                 <td data-label="Discounted Price" class="align-right">$${deliveryDiscountedPrice.toFixed(2)}</td>
             </tr>
         `);
 
-        const installExcluded = ui.f2.installFeeExcluded;
+        const installExcluded = uiState.f2.installFeeExcluded;
         const installPriceClass = installExcluded ? 'class="align-right is-excluded"' : 'class="align-right"';
         const installDiscountedPrice = installExcluded ? 0 : (summaryData.installFee || 0);
         rows.push(`
@@ -325,14 +274,14 @@ export class QuoteGeneratorService {
             </tr>
         `);
 
-        const removalExcluded = ui.f2.removalFeeExcluded;
+        const removalExcluded = uiState.f2.removalFeeExcluded;
         const removalPriceClass = removalExcluded ? 'class="align-right is-excluded"' : 'class="align-right"';
         const removalDiscountedPrice = removalExcluded ? 0 : (summaryData.removalFee || 0);
         rows.push(`
             <tr>
                 <td data-label="NO">${itemNumber++}</td>
                 <td data-label="Description" class="description">Removal</td>
-                <td data-label="QTY" class="align-right">${ui.f2.removalQty || 0}</td>
+                <td data-label="QTY" class="align-right">${uiState.f2.removalQty || 0}</td>
                 <td data-label="Price" ${removalPriceClass}>$${(summaryData.removalFee || 0).toFixed(2)}</td>
                 <td data-label="Discounted Price" class="align-right">$${removalDiscountedPrice.toFixed(2)}</td>
             </tr>
